@@ -1,81 +1,176 @@
-===================================
-Connect an IoT Box to your database
-===================================
+============================================================
+Connect an Internet of Things (IoT) box to the Odoo database
+============================================================
 
-Install the Internet of Things (IoT) App on your Odoo Database.
+The Internet of Things (IoT) box is a micro-computer device that allows for the connection of input
+and output devices to an Odoo database. An :abbr:`IoT (Internet of Things)` box subscription is
+required in order to use the :abbr:`IoT (Internet of Things)` box with a secured connection. A
+computer is also required to setup the :abbr:`IoT (Internet of Things)` box.
 
-.. image:: connect/connect01.png
+.. seealso::
+   `IoT Box FAQ <https://www.odoo.com/app/iot-faq>`_
+
+Begin the :abbr:`IoT (Internet of Things)` configuration process by :ref:`installing the IoT app
+<general/install>` on the Odoo database through the :menuselection:`Apps` application.
+
+.. image:: connect/install-iot-app.png
    :align: center
+   :alt: The Internet of Things (IoT) app on the Odoo database.
 
-Go in the IoT App and click on Connect on the IoT Boxes page.
+Next, after the *IoT app* is installed, navigate to :menuselection:`IoT app --> IoT Boxes`, and then
+click on the :guilabel:`Connect` button located in the upper-left corner of the the :guilabel:`IoT
+Boxes` dashboard.
 
-.. image:: connect/connect02.png
+.. image:: connect/connect-iot.png
    :align: center
+   :alt: Connecting an IoT box to the Odoo database.
 
-Follow the steps to connect your IoT Box.
+There are two ways to connect the :abbr:`IoT (Internet of Things)` box to the database once the *IoT
+app* is installed. Follow the steps in either of the two next sections to connect the :abbr:`IoT
+(Internet of Things)` box via :ref:`wired ethernet connection <iot_connect/ethernet>` or via
+:ref:`WiFi <iot_connect/wifi>`.
 
-.. image:: connect/connect03.png
+.. image:: connect/connect-iot-box.png
    :align: center
+   :alt: Connection steps for a wired connection or WiFi connection.
 
-Ethernet Connection
+.. seealso::
+   The disk image that the SD card is formatted with, on the :abbr:`IoT (Internet of Things)` box,
+   is unique to each version of the Odoo database the :abbr:`IoT (Internet of Things)` is running
+   on. Ensure the :abbr:`IoT (Internet of Things)` box is :doc:`flashed <flash_sdcard>` with the
+   most up-to-date :abbr:`IoT (Internet of Things)` disk image (of the :abbr:`IoT (Internet of
+   Things)` box version according to the database version).
+
+.. _iot_connect/ethernet:
+
+Ethernet connection
 ===================
 
-#. Connect to the IoT Box all the devices that have to be connected with
-   cables (ethernet, usb devices, etc.).
+#. Connect all the devices that should be connected with cables to the :abbr:`IoT (Internet of
+   Things)` box (ethernet, :abbr:`USB (Universal Serial Bus)` devices, etc.). At minimum a HDMI
+   screen should be connected.
+#. Plug the :abbr:`IoT (Internet of Things)` box into to a power source.
+#. Immediately after the unit powers on and boots up, read the :guilabel:`Pairing Code` from the
+   screen or from the printout of a receipt printer connected to the :abbr:`IoT (Internet of
+   Things)` box.
 
-#. Power on the IoT Box.
+   .. warning::
+      By default the :abbr:`IoT (Internet of Things)` box will display the *pairing code* for a
+      maximum of 5 minutes after the unit boots up. After 5 minutes the pairing code will disappear
+      for security purposes and the :abbr:`IoT (Internet of Things)` box will need to be rebooted
+      manually by unplugging the unit from the power source for ten seconds and re-plugging it back
+      in.
 
-#. Read the Pairing Code from a screen or a receipt printer connected to the IoT Box.
+   .. note::
+      If no screen is attached to the :abbr:`IoT (Internet of Things)` box then the *pairing code*
+      can be accessed from the :guilabel:`IoT Box Home Page` by clicking on :guilabel:`POS Display`
+      button. For instructions on how to access the :guilabel:`IoT Box Home Page`, visit
+      :ref:`iot_connect/token`.
 
-   .. image:: connect/connect04.png
+#. On the computer, navigate to :menuselection:`IoT app --> IoT Boxes`, and then click on the
+   :guilabel:`Connect` button located in the upper-left corner of the the :guilabel:`IoT Boxes`
+   dashboard. Input the :guilabel:`Pairing Code` in the :guilabel:`Pairing Code` field and click on
+   the :guilabel:`Pair` button. The database will now link to the :abbr:`IoT (Internet of Things)`
+   box and it will appear on the :menuselection:`IoT Boxes` page.
 
-#. Input the Pairing Code and click on the Pair button.
+.. _iot_connect/wifi:
 
-.. note::
-   Recent changes in modern web browsers forced us to modify the connection wizard.
-   If your screen is different from the screenshots, make sure that the
-   ``iot_pairing`` module is installed.
-
-WiFi Connection
+WiFi connection
 ===============
 
-#. Power on the IoT Box
+#. Connect all the devices that should be connected with cables to the :abbr:`IoT (Internet of
+   Things)` box (ethernet, :abbr:`USB (Universal Serial Bus)` devices, etc.).
+#. Plug the :abbr:`IoT (Internet of Things)` box into to a power source.
+#. On the computer, navigate to :menuselection:`IoT app --> IoT Boxes`, and then click on the
+   :guilabel:`Connect` button located in the upper-left corner of the the :guilabel:`IoT Boxes`
+   dashboard. Copy the :guilabel:`Token` from the :guilabel:`WiFi connection` section as this will
+   later be used to link the Odoo database to the :abbr:`IoT (Internet of Things)` box.
+#. On the computer, navigate to the available WiFi networks and connect to the :abbr:`IoT (Internet
+   of Things)` box WiFi network (ensure there is no ethernet cable plugged into the computer). The
+   WiFi network dispersed by the :abbr:`IoT (Internet of Things)` box  will start with
+   `IoTBox-xxxxxxxxxx`.
 
-#. Copy the token
+   .. image:: connect/connect-iot-wifi.png
+      :align: center
+      :alt: WiFi networks available on the computer.
 
-   .. image:: connect/connect05.png
+#. Upon connecting to the :abbr:`IoT (Internet of Things)` box WiFi, a browser will automatically
+   redirect to the :abbr:`IoT (Internet of Things)` box homepage. Name the :abbr:`IoT (Internet of
+   Things)` box, then paste the previously copied *token* into the :guilabel:`Server Token` field,
+   and then click on :guilabel:`Next`.
 
-#. Connect to the IoT Box WiFi Network (make sure there is no ethernet
-   cable plugged in your computer).
+   .. image:: connect/server-token.png
+      :align: center
+      :alt: Enter the server token into the IoT box.
 
-   .. image:: connect/connect06.png
+   .. note::
+      If the :abbr:`IoT (Internet of Things)` box WiFi connection wizard doesn't start, then see
+      :ref:`the documentation on connecting with a token <iot_connect/token>`.
 
-#. You will be redirected to the IoT Box Homepage (if it doesn't work,
-   connect to the IP address of the box). Give a name to your IoT Box (not
-   required) and paste the token, then click on next.
+#. Still working on the computer, choose the WiFi network that the :abbr:`IoT (Internet of Things)`
+   box will connect with (enter the password if there is one) and click on :guilabel:`Connect`. Wait
+   a few seconds and the browser will redirect to the :abbr:`IoT (Internet of Things)` box homepage.
+   The computer may need to be manually re-connected back to the original WiFi connection, if this
+   isn't performed automatically.
 
-   .. image:: connect/connect07.png
+   .. image:: connect/configure-wifi-network-iot.png
+      :align: center
+      :alt: Configuring the WiFi for the IoT box.
 
-   .. tip::
-      If you are on Runbot, do not forget to add the -all or -base in the
-      token (e.g. this token
-      **http://375228-saas-11-5-iot-f3f920.runbot16.odoo.com\|4957098401**
-      should become
-      **http://375228-saas-11-5-iot-f3f920-all.runbot16.odoo.com\|4957098401**).
+The :abbr:`IoT (Internet of Things)` box should appear when navigating to :menuselection:`IoT
+app --> IoT Boxes` on the Odoo database.
 
-#. Choose the WiFi network you want to connect with (enter the password
-   if there is one) and click on Submit. Wait a few seconds before being
-   redirected to your database.
-
-   .. image:: connect/connect08.png
-
-You should now see the IoT Box.
-
-.. image:: connect/connect09.png
+.. image:: connect/iot-box-connected.png
    :align: center
+   :alt: The IoT box has been successfully configured on the Odoo database.
 
-IoT Box Schema
+.. important::
+   The :abbr:`IoT (Internet of Things)` box may need to be manually rebooted upon successfully
+   connecting via WiFi for the :abbr:`IoT (Internet of Things)` box to appear in the *IoT app* of
+   the Odoo database. Simply unplug the device and plug it back into the power source after ten
+   seconds.
+
+.. _iot_connect/token:
+
+Manually connecting the IoT box with the Token
+==============================================
+
+A manual connection of the :abbr:`IoT (Internet of Things)` box to the :abbr:`IoT (Internet of
+Things)` app can be made with the :guilabel:`Token` from a computer. The :guilabel:`Token` can be
+found by navigating to :menuselection:`IoT app --> IoT Boxes` and clicking on :guilabel:`Connect`.
+Under the :guilabel:`WiFi Connection` section of the :guilabel:`Connect an IoT Box` page that
+appears click :guilabel:`Copy` to the right of the :guilabel:`Token`. This :guilabel:`Token` will be
+entered into the :guilabel:`IoT Box Home Page`.
+
+#. Access the :guilabel:`IoT Box Home Page` by entering the :abbr:`IP (Internet Protocol)` address
+   of the :abbr:`IoT (Internet of Things)` box into a browser window from a computer on the same
+   network as the :abbr:`IoT (Internet of Things)` box (preferably by ethernet connection).
+
+   .. note::
+      The :abbr:`IP (Internet Protocol)` address can be accessed by the router admin console that
+      the :abbr:`IoT (Internet of Things)` box is connected to or by connecting a receipt printer to
+      the :abbr:`IoT (Internet of Things)` box. A receipt will print out with the :abbr:`IoT
+      (Internet of Things)` box's :abbr:`IP (Internet Protocol)` address on it.
+
+#. On the :abbr:`IoT (Internet of Things)` box homepage, enter the :guilabel:`Token` under the
+   :guilabel:`Server` section by clicking on :guilabel:`Configure`.
+#. Paste the :guilabel:`Token` into the :guilabel:`Server Token` field and click
+   :guilabel:`Connect`. The :abbr:`IoT (Internet of Things)` box will then link to the Odoo
+   database.
+
+IoT box schema
 ==============
 
-.. image:: connect/connect10.png
-   :align: center
+Raspberry Pi 4
+--------------
+
+.. figure:: connect/iot-box-schema.png
+
+   The Odoo IoT box (Raspberry Pi 4) schema with labels.
+
+Raspberry Pi 3
+--------------
+
+.. figure:: connect/iox-box-schema-3.png
+
+   The Odoo IoT box (Raspberry Pi 3) schema with labels.
