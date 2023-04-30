@@ -10,7 +10,8 @@ In Owl, every part of user interface is managed by a component: they hold the lo
 templates that are used to render the user interface. In practice, a component is represented by a
 small JavaScript class subclassing the `Component` class.
 
-Before getting into the exercises, make sure you have followed all the steps described in this
+To get started, you need a running Odoo server and a development environment setup. Before getting
+into the exercises, make sure you have followed all the steps described in this
 :ref:`tutorial introduction <tutorials/discover_js_framework/setup>`.
 
 .. spoiler:: Solutions
@@ -46,7 +47,7 @@ button.
        static template = "my_module.Counter";
 
        setup() {
-           state = useState({ value: 0 });
+          this.state = useState({ value: 0 });
        }
 
        increment() {
@@ -54,8 +55,8 @@ button.
        }
    }
 
-The `Counter` component specifies the name of the template to render. The template is written in XML
-and defines a part of user interface:
+The `Counter` component specifies the name of a template that represents its html. It is written in XML
+using the QWeb language:
 
 .. code-block:: xml
 
@@ -66,9 +67,10 @@ and defines a part of user interface:
       </t>
    </templates>
 
-You maybe noticed the `owl="1"` temporary attribute, it allows Odoo to differentiate Owl
-templates from the old JavaScript framework templates. Note that Owl templates are not the same
-as QWeb templates: they can contain additional directives, such as `t-on-click`.
+The `owl="1"` attribute allows Odoo to differentiate Owl templates from the old JavaScript
+framework templates. In the future, this attribute will no longer be necessary, since all
+static templates will be rendered by Owl anyway. Note that Owl templates are not the same
+as QWeb templates: they can contain additional directives such as `t-on-click`. 
 
 1. Displaying a counter
 =======================
