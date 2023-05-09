@@ -174,7 +174,7 @@ function.
 
    The `t-esc` directive can still be used in Owl templates. It is slightly faster than `t-out`.
 
-4. Props validation
+5. Props validation
 ===================
 
 The `Card` component has an implicit API. It expects to receive two strings in its props: the `title`
@@ -194,7 +194,7 @@ configuration <{OWL_PATH}/doc/reference/app.md#configuration>`_.
    :file:`owl_playground/static/src/main.js`.
 #. Remove `title` from the props and reload the page. The validation should fail.
 
-5. The sum of two `Counter`
+6. The sum of two `Counter`
 ===========================
 
 We saw in a previous exercise that `props` can be used to provide information from a parent
@@ -216,7 +216,7 @@ be called whenever the `Counter` component is incremented.
    is incremented.
 #. Modify the `Playground` component to maintain a local state value (`sum`), initially
    set to 0
-#. Implement an `incrementSum` method to `Playground`
+#. Implement an `incrementSum` method in `Playground`
 #. Give that method as a prop to two (or more!) sub `Counter` components.
 
 .. important::
@@ -224,81 +224,81 @@ be called whenever the `Counter` component is incremented.
    There is a subtlety with callback props: they usually should be called with the `.bind`
    suffix. See the `documentation <{OWL_PATH}/doc/reference/props.md#binding-function-props>`_
 
-3. A `Todo` component
-=====================
+7. A todo list
+==============
 
-In this tutorial, we will create a todo list. As a first step, let us   
-We will create new components in :file:`owl_playground/static/src/` to keep track of a list of
-todos. This will be done incrementally in multiple exercises that will introduce various concepts.
+Let us now discover various features of Owl by creating a todo list.  We need two components: a
+`TodoList` component that will display a list of `TodoItem` components. The list of todos is a
+state that should be maintained by the `TodoList`. 
 
-.. exercise::
+For this tutorial, a `todo` is an object that contains three values: an `id` (number), a `description`
+(string) and a flag `isCompleted` (boolean):
 
-   #. Create a `Todo` component that receive a `todo` object in `props
-      <{OWL_PATH}/doc/reference/props.md>`_, and display it. It should show something like
-      **3. buy milk**.
-   #. Add the Bootstrap classes `text-muted` and `text-decoration-line-through` on the task if it is
-      done. To do that, you can use `dynamic attributes
-      <{OWL_PATH}/doc/reference/templates.md#dynamic-attributes>`_.
-   #. Modify :file:`owl_playground/static/src/playground.js` and
-      :file:`owl_playground/static/src/playground.xml` to display your new `Todo` component with
-      some hard-coded props to test it first.
+.. code-block:: js
+   
+   { id: 3, description: "buy milk", isCompleted: false }
 
-      .. example::
+#. Create a `TodoList` and a `TodoItem` components
+#. The `TodoItem` component should receive a `todo` as a prop, and display its `id` and `description` in a `div`.
+#. For now, hardcode the list of todos:
 
-         .. code-block:: javascript
+   .. code-block:: js
+      
+      // in TodoList
+      this.todos = useState([{ id: 3, description: "buy milk", isCompleted: false }]);
 
-            setup() {
-                ...
-                this.todo = { id: 3, description: "buy milk", done: false };
-            }
+#. Use `t-foreach <{OWL_PATH}/doc/reference/templates.md#loops>`_ to display each todo in a `TodoItem`
 
-.. image:: 01_owl_components/todo.png
-   :scale: 70%
-   :align: center
+Note that the `t-foreach` directive is not exactly the same in Owl as the QWeb python implementation: it
+requires a `t-key` unique value, so Owl can properly reconciliate each element.
+
+8. Use dynamic attributes
+=========================
+
+For now, the `TodoItem` component does not visually show if the `todo` is completed. Let us do that by
+using a `dynamic attributes <{OWL_PATH}/doc/reference/templates.md#dynamic-attributes>`_.
+
+#. Add the Bootstrap classes `text-muted` and `text-decoration-line-through` on the `TodoItem` root element
+   if it is completed.
+#. Change the hardcoded `todo` value to check that it is properly displayed.
+
+Even though the directive is named `t-att` (for attribute), it can be used to set a `class` value (and 
+html properties such as the `value` of an input).
+
+.. tip::
+
+   Owl let you combine static class values with dynamic values. The following example will work as expected:
+
+   .. code-block:: xml
+
+      <div class="a" t-att-class="someExpression"/>
 
 .. seealso::
    `Owl: Dynamic class attributes <{OWL_PATH}/doc/reference/templates.md#dynamic-class-attribute>`_
 
-
-5. A list of todos
-==================
-
-Now, let us display a list of todos instead of just one todo. For now, we can still hard-code the
-list.
-
-.. exercise::
-
-   #. Change the code to display a list of todos instead of just one. Create a new `TodoList`
-      component to hold the `Todo` components and use `t-foreach
-      <{OWL_PATH}/doc/reference/templates.md#loops>`_ in its template.
-   #. Think about how it should be keyed with the `t-key` directive.
-
-.. image:: 01_owl_components/todo_list.png
-   :scale: 70%
-   :align: center
-
-6. Adding a todo
+9. Adding a todo
 ================
 
 So far, the todos in our list are hard-coded. Let us make it more useful by allowing the user to add
 a todo to the list.
 
-.. exercise::
+#. Remove the hardcoded values in the `TodoList` component
 
-   #. Add an input above the task list with placeholder *Enter a new task*.
-   #. Add an `event handler <{OWL_PATH}/doc/reference/event_handling.md>`_ on the `keyup` event
-      named `addTodo`.
-   #. Implement `addTodo` to check if enter was pressed (:code:`ev.keyCode === 13`), and in that
-      case, create a new todo with the current content of the input as the description and clear the
-      input of all content.
-   #. Make sure the todo has a unique id. It can be just a counter that increments at each todo.
-   #. Wrap the todo list in a `useState` hook to let Owl know that it should update the UI when the
-      list is modified.
-   #. Bonus point: don't do anything if the input is empty.
+   .. code-block:: javascript
 
-      .. code-block:: javascript
+      this.todos = useState([]);
 
-         this.todos = useState([]);
+#. Add an input above the task list with placeholder *Enter a new task*.
+#. Add an `event handler <{OWL_PATH}/doc/reference/event_handling.md>`_ on the `keyup` event
+   named `addTodo`.
+#. Implement `addTodo` to check if enter was pressed (:code:`ev.keyCode === 13`), and in that
+   case, create a new todo with the current content of the input as the description and clear the
+   input of all content.
+#. Make sure the todo has a unique id. It can be just a counter that increments at each todo.
+#. Wrap the todo list in a `useState` hook to let Owl know that it should update the UI when the
+   list is modified.
+#. Bonus point: don't do anything if the input is empty.
+
 
 .. image:: 01_owl_components/create_todo.png
    :scale: 70%
