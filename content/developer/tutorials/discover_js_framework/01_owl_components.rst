@@ -14,13 +14,6 @@ To get started, you need a running Odoo server and a development environment set
 into the exercises, make sure you have followed all the steps described in this
 :ref:`tutorial introduction <tutorials/discover_js_framework/setup>`.
 
-.. spoiler:: Solutions
-
-   The solutions for each exercise of the chapter are hosted on the `official Odoo tutorials
-   repository
-   <https://github.com/odoo/tutorials/commits/{CURRENT_MAJOR_BRANCH}-solutions/owl_playground>`_. It
-   is recommended to try to solve them first without looking at the solution!
-
 .. tip::
    If you use Chrome as your web browser, you can install the `Owl Devtools` extension. This
    extension provides many features to help you understand and profile any Owl application.
@@ -31,6 +24,13 @@ In this chapter, we use the `owl_playground` addon, which provides a simplified 
 only contains Owl and a few other files. The goal is to learn Owl itself, without relying on Odoo
 web client code. To get started, open the `/owl_playground/playground` route with your browser: it
 should display an Owl component with the text *hello world*.
+
+.. spoiler:: Solutions
+
+   The solutions for each exercise of the chapter are hosted on the `official Odoo tutorials
+   repository
+   <https://github.com/odoo/tutorials/commits/{CURRENT_MAJOR_BRANCH}-solutions/owl_playground>`_. It
+   is recommended to try to solve them first without looking at the solution!
 
 Example: a `Counter` component
 ==============================
@@ -75,22 +75,21 @@ as QWeb templates: they can contain additional directives such as `t-on-click`.
 1. Displaying a counter
 =======================
 
-As a first exercise, let us implement a counter in the `Playground` component located in
-:file:`owl_playground/static/src/`. To see the result, you can go to the `/owl_playground/playground`
+As a first exercise, let us modify the `Playground` component located in
+:file:`owl_playground/static/src/` to turn it into a counter. To see the result, you can go to the `/owl_playground/playground`
 route with your browser.
 
-.. exercise::
 
-   #. Modify :file:`playground.js` so that it acts as a counter like in the example above. You will
-      need to use the `useState hook
-      <{OWL_PATH}/doc/reference/hooks.md#usestate>`_ so that the component is re-rendered
-      whenever any part of the state object that has been read by this component is modified.
-   #. In the same component, create an `increment` method.
-   #. Modify the template in :file:`playground.xml` so that it displays your counter variable. Use
-      `t-esc <{OWL_PATH}/doc/reference/templates.md#outputting-data>`_ to output the data.
-   #. Add a button in the template and specify a `t-on-click
-      <{OWL_PATH}/doc/reference/event_handling.md#event-handling>`_ attribute in the button to
-      trigger the `increment` method whenever the button is clicked.
+#. Modify :file:`playground.js` so that it acts as a counter like in the example above. You will
+   need to use the `useState hook
+   <{OWL_PATH}/doc/reference/hooks.md#usestate>`_ so that the component is re-rendered
+   whenever any part of the state object that has been read by this component is modified.
+#. In the same component, create an `increment` method.
+#. Modify the template in :file:`playground.xml` so that it displays your counter variable. Use
+   `t-esc <{OWL_PATH}/doc/reference/templates.md#outputting-data>`_ to output the data.
+#. Add a button in the template and specify a `t-on-click
+   <{OWL_PATH}/doc/reference/event_handling.md#event-handling>`_ attribute in the button to
+   trigger the `increment` method whenever the button is clicked.
 
 .. image:: 01_owl_components/counter.png
    :scale: 70%
@@ -101,26 +100,134 @@ route with your browser.
    easier when the files are not minified. Switch to
    :ref:`debug mode with assets <developer-mode/url>` so that the files are not minified.
 
-2. Extract counter in a component
-=================================
+This exercise showcases an important feature of Owl: the `reactivity system <{OWL_PATH}/doc/reference/reactivity.md>`_.
+The `useState` function wraps a value in a proxy so Owl can keep track of which component
+needs which part of the state, so it can be updated whenever a value has been changed. Try
+removing the `useState` function and see what happens.
+
+2. Extract counter in a sub component
+=====================================
 
 For now we have the logic of a counter in the `Playground` component, let us see how to create a
-`sub-component <{OWL_PATH}/doc/reference/component.md#sub-components>`_ from it.
+`sub-component <{OWL_PATH}/doc/reference/component.md#sub-components>`_ from it:
 
-.. exercise::
-
-   #. Extract the counter code from the `Playground` component into a new `Counter` component.
-   #. You can do it in the same file first, but once it's done, update your code to move the
-      `Counter` in its own folder and file. Import it relatively from `./counter/counter`. Make sure
-      the template is in its own file, with the same name.
+#. Extract the counter code from the `Playground` component into a new `Counter` component.
+#. You can do it in the same file first, but once it's done, update your code to move the
+   `Counter` in its own folder and file. Import it relatively from `./counter/counter`. Make sure
+   the template is in its own file, with the same name.
 
 .. important::
    Don't forget :code:`/** @odoo-module **/` in your JavaScript files. More information on this can
    be found :ref:`here <frontend/modules/native_js>`.
 
-3. A todo component
+3. A simple `Card` component
+============================
+
+Components are really the most natural way to divide a complicated user interface into multiple
+reusable pieces. But to make them truly useful, it is necessary to be able to communicate
+some information between them. Let us see how a parent component can provide information to a
+sub component by using attributes (most commonly known as `props <{OWL_PATH}/doc/reference/props.md>`_).
+
+The goal of this exercise is to create a `Card` component, that takes two props: `title` and `content`.
+For example, here is how it could be used:
+
+.. code-block:: xml
+
+   <Card title="'my title'" content="'some content'"/>
+
+The above example should produce some html using bootstrap that look like this:
+
+.. code-block:: html
+
+         <div class="card" style="width: 18rem;">
+             <div class="card-body">
+                 <h5 class="card-title">my title</h5>
+                 <p class="card-text">
+                  some content
+                 </p>
+             </div>
+         </div>
+
+#. Create a `Card` component
+#. Import it in `Playground` and display a few cards in its template
+
+4. Using `markup` to display html
+=================================
+
+If you used `t-esc` in the previous exercise, then you may have noticed that Owl will automatically escape
+its content. For example, if you try to display some html like this: `<Card title="'my title'" content="'<div>some content</div>'"/>`,
+the resulting output will simply display the html as a string.
+
+In this case, since the `Card` component may be used to display any kind of content, it makes sense
+to allow the user to display some html. This is done with the 
+`t-out directive <{OWL_PATH}/doc/reference/templates.md#outputting-data>`_. 
+
+However, displaying arbitrary content as html is dangerous, it could be used to inject malicious code, so
+by default, Owl will always escape a string unless it has been explicitely marked as safe with the `markup`
+function.
+
+#. Update `Card` to use `t-out`
+#. Update `Playground` to import `markup`, and use it on some html values
+#. Make sure that you see that normal strings are always escaped, unlike markuped strings.
+
+.. note::
+
+   The `t-esc` directive can still be used in Owl templates. It is slightly faster than `t-out`.
+
+4. Props validation
 ===================
 
+The `Card` component has an implicit API. It expects to receive two strings in its props: the `title`
+and the `content`. Let us make that API more
+explicit. We can add a props definition that will let Owl perform a validation step in `dev mode
+<{OWL_PATH}/doc/reference/app.md#dev-mode>`_. You can activate the dev mode in the `App
+configuration <{OWL_PATH}/doc/reference/app.md#configuration>`_.
+
+ It is a good practice to do props validation for every component.
+
+#. Add `props validation <{OWL_PATH}/doc/reference/props.md#props-validation>`_ to the `Card`
+   component.
+#. Open the :guilabel:`Console` tab of your browser's dev tools and make sure the props
+   validation passes in dev mode, which is activated by default in `owl_playground`. The dev mode
+   can be activated and deactivated by modifying the `dev` attribute in the in the `config`
+   parameter of the `mount <{OWL_PATH}/doc/reference/app.md#mount-helper>`_ function in
+   :file:`owl_playground/static/src/main.js`.
+#. Remove `title` from the props and reload the page. The validation should fail.
+
+5. The sum of two `Counter`
+===========================
+
+We saw in a previous exercise that `props` can be used to provide information from a parent
+to a child component. Now, let us see how we can communicate information in the opposite
+direction.
+
+In this exercise, we want to display two `Counter` components, and below them, the sum of
+their values. So, the parent component (`Playground`) need to be informed whenever one of
+the `Counter` value is changed. 
+
+This can be done by using a `callback prop <{OWL_PATH}/doc/reference/props.md#binding-function-props>`_:
+a prop that is a function meant to be called back. The child component can choose to call
+that function with any argument. In our case, we will simply add an optional `onChange` prop that will
+be called whenever the `Counter` component is incremented.
+
+#. Add prop validation to the `Counter` component: it should accept an optional `onChange`
+   function prop.
+#. Update the `Counter` component to call the `onChange` prop (if it exists) whenever it
+   is incremented.
+#. Modify the `Playground` component to maintain a local state value (`sum`), initially
+   set to 0
+#. Implement an `incrementSum` method to `Playground`
+#. Give that method as a prop to two (or more!) sub `Counter` components.
+
+.. important::
+
+   There is a subtlety with callback props: they usually should be called with the `.bind`
+   suffix. See the `documentation <{OWL_PATH}/doc/reference/props.md#binding-function-props>`_
+
+3. A `Todo` component
+=====================
+
+In this tutorial, we will create a todo list. As a first step, let us   
 We will create new components in :file:`owl_playground/static/src/` to keep track of a list of
 todos. This will be done incrementally in multiple exercises that will introduce various concepts.
 
@@ -152,27 +259,6 @@ todos. This will be done incrementally in multiple exercises that will introduce
 .. seealso::
    `Owl: Dynamic class attributes <{OWL_PATH}/doc/reference/templates.md#dynamic-class-attribute>`_
 
-4. Props validation
-===================
-
-The `Todo` component has an implicit API. It expects to receive in its props the description of a
-todo object in a specified format: `id`, `description` and `done`. Let us make that API more
-explicit. We can add a props definition that will let Owl perform a validation step in `dev mode
-<{OWL_PATH}/doc/reference/app.md#dev-mode>`_. You can activate the dev mode in the `App
-configuration <{OWL_PATH}/doc/reference/app.md#configuration>`_.
-
- It is a good practice to do props validation for every component.
-
-.. exercise::
-
-   #. Add `props validation <{OWL_PATH}/doc/reference/props.md#props-validation>`_ to the `Todo`
-      component.
-   #. Open the :guilabel:`Console` tab of your browser's dev tools and make sure the props
-      validation passes in dev mode, which is activated by default in `owl_playground`. The dev mode
-      can be activated and deactivated by modifying the `dev` attribute in the in the `config`
-      parameter of the `mount <{OWL_PATH}/doc/reference/app.md#mount-helper>`_ function in
-      :file:`owl_playground/static/src/main.js`.
-   #. Remove `done` from the props and reload the page. The validation should fail.
 
 5. A list of todos
 ==================

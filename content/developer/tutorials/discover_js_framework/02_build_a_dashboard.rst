@@ -1,6 +1,6 @@
-=============================
-Chapter 2: Odoo Web Framework
-=============================
+============================
+Chapter 2: Build a dashboard
+============================
 
 The first part of this tutorial introduced you to most of Owl ideas. It is now time to learn
 about the Odoo JavaScript framework in its entirety, as used by the web client.
