@@ -307,8 +307,16 @@ a todo to the list.
 .. seealso::
    `Owl: Reactivity <{OWL_PATH}/doc/reference/reactivity.md>`_
 
-7. Focusing the input
+10. Focusing the input
 =====================
+
+Owl components go through a lot of phases: they are instantiated, rendered, mounted, ... 
+Each of these moments can be useful to perform some actions, so Owl provides `a large variety
+of special functions, named hooks<{OWL_PATH}/doc/reference/hooks.md>`_ that let you run some
+code at a specific moment in the lifecycle of a component.
+
+be proficient in Owl, it is useful to have a good mental model of the `Owl: Component lifecycle <{OWL_PATH}/doc/reference/component.md#lifecycle>`_
+
 
 Let's see how we can access the DOM with `t-ref <{OWL_PATH}/doc/reference/refs.md>`_ and `useRef
 <{OWL_PATH}/doc/reference/hooks.md#useref>`_.
