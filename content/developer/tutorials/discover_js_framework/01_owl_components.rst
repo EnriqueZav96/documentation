@@ -253,6 +253,7 @@ For this tutorial, a `todo` is an object that contains three values: an `id` (nu
 
 #. Use `t-foreach <{OWL_PATH}/doc/reference/templates.md#loops>`_ to display each todo in a `TodoItem`
 #. Display a `TodoList` in the playground
+#. Add props validation to `TodoItem`
 
 Note that the `t-foreach` directive is not exactly the same in Owl as the QWeb python implementation: it
 requires a `t-key` unique value, so Owl can properly reconciliate each element.
@@ -409,20 +410,20 @@ component is mounted.
 ==================
 
 Now, let's add a new feature: mark a todo as completed. This is actually trickier than one might
-think. The owner of the state is not the same as the component that displays it. So, the `Todo`
+think. The owner of the state is not the same as the component that displays it. So, the `TodoItem`
 component needs to communicate to its parent that the todo state needs to be toggled. One classic
 way to do this is by using a `callback prop
 <{OWL_PATH}/doc/reference/props.md#binding-function-props>`_ `toggleState`.
 
 #. Add an input with the attribute :code:`type="checkbox"` before the id of the task, which must
-   be checked if the state `done` is true.
+   be checked if the state `isCompleted` is true.
 
    .. tip::
       Owl does not create attributes computed with the `t-att` directive if it evaluates to a
       falsy value.
 
-#. Add a callback props `toggleState`.
-#. Add a `click` event handler on the input in the `Todo` component and make sure it calls the
+#. Add a callback props `toggleState` to `TodoItem`.
+#. Add a `click` event handler on the input in the `TodoItem` component and make sure it calls the
    `toggleState` function with the todo id.
 #. Make it work!
 
@@ -435,9 +436,10 @@ way to do this is by using a `callback prop
 
 The final touch is to let the user delete a todo.
 
-#. Add a new callback prop `removeTodo`.
-#. Insert :code:`<span class="fa fa-remove"/>` in the template of the `Todo` component.
+#. Add a new callback prop `removeTodo` in `TodoItem`.
+#. Insert :code:`<span class="fa fa-remove"/>` in the template of the `TodoItem` component.
 #. Whenever the user clicks on it, it should call the `removeTodo` method.
+#. Make it work!
 
    .. tip::
       If you're using an array to store your todo list, you can use the JavaScript `splice`

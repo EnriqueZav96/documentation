@@ -17,11 +17,9 @@ solid foundation for using the Odoo JavaScript framework in your projects.
 The first part covers the basics of Owl components, which
 are a key part of the Odoo JS framework. Owl components are reusable UI components that can be used
 to build complex web interfaces quickly and efficiently. We will explore how to create and use Owl
-components in Odoo.
-
-The second part of the tutorial focuses on creating a dashboard using various features of Odoo.
-Dashboards are an essential part of any web application, and provide a nice starting point to use
-and interact with the Odoo codebase.
+components in Odoo. The second part of the tutorial focuses on creating a dashboard using various
+features of Odoo. Dashboards are an essential part of any web application, and provide a nice starting
+point to use and interact with the Odoo codebase.
 
 This tutorial assumes that you have some basic knowledge of development with Odoo in general
 (models, controllers, QWeb, ...). If you are new to Odoo, we recommend that you start with the
