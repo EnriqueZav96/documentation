@@ -195,13 +195,9 @@ configuration <{OWL_PATH}/doc/reference/app.md#configuration>`_.
 
 #. Add `props validation <{OWL_PATH}/doc/reference/props.md#props-validation>`_ to the `Card`
    component.
-#. Open the :guilabel:`Console` tab of your browser's dev tools and make sure the props
-   validation passes in dev mode, which is activated by default in `owl_playground`. The dev mode
-   can be activated and deactivated by modifying the `dev` attribute in the in the `config`
-   parameter of the `mount <{OWL_PATH}/doc/reference/app.md#mount-helper>`_ function in
-   :file:`owl_playground/static/src/main.js`.
-#. Remove `title` from the props and reload the page. The validation should fail.
-
+#. Rename the `title` props into something else in the playground template, then check in the
+   :guilabel:`Console` tab of your browser's dev tools that you can see an error.
+   
 6. The sum of two `Counter`
 ===========================
 
