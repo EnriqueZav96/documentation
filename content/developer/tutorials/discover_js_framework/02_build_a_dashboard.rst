@@ -63,50 +63,115 @@ result.
    - `Example: use of Layout in kanban view
      <{GITHUB_PATH}/addons/web/static/src/views/kanban/kanban_controller.xml>`_
 
+Services
+========
+
+In practice, every component (except the root component) may be destroyed at any time and replaced
+(or not) with another component. This means that each component internal state is not persistent.
+This is fine in many cases, but there certainly are situations where we want to keep some data around.
+For example, all discuss messages should not be reloaded every time we display a channel.
+
+Also, it may happen that we need to write some code that is not a component. Maybe something that
+process all barcodes, or that manages the user configuration (context, ...).
+
+The Odoo framework defines the idea of a :ref:`service <frontend/services>`, which is a persistent
+piece of code that exports state and/or functions. Each service can depend on other services, and
+components can import a service.
+
+The following example registers a simple service that displays a notification every 5 seconds:
+
+.. code-block:: js
+
+   import { registry } from "@web/core/registry";
+
+   const myService = {
+   dependencies: ["notification"],
+   start(env, { notification }) {
+      let counter = 1;
+      setInterval(() => {
+         notification.add(`Tick Tock ${counter++}`);
+      }, 5000);
+   },
+   };
+
+   registry.category("services").add("myService", myService);
+
+Services can be accessed by any component. Imagine that we have a service to maintain some shared
+state:
+
+
+.. code-block:: js
+
+   import { registry } from "@web/core/registry";
+
+   const sharedStateService = {
+   start(env) {
+      let state = {};
+
+      return {
+         getValue(key) {
+         return state[key];
+         },
+         setValue(key, value) {
+         state[key] = value;
+         },
+      };
+   },
+   };
+
+   registry.category("services").add("shared_state", sharedStateService);
+
+Then, any component can do this:
+
+.. code-block:: js
+
+   import { useService } from "@web/core/utils/hooks";
+
+   setup() {
+      this.sharedState = useService("shared_state");
+      const value = this.sharedState.getValue("somekey");
+      // do something with value
+   }
+
 2. Add some buttons for quick navigation
 ========================================
 
-Let us now use the action service for an easy access to the common views in Odoo.
+One important service provided by Odoo is the `action` service: it can execute
+all kind of standard actions defined by Odoo. For example, here is how one
+component could execute an action by its xml id:
 
-:ref:`Services <frontend/services>` is a notion defined by the Odoo JavaScript framework; it is a
-persistent piece of code that exports a state and/or functions. Each service can depend on other
-services, and components can import a service with the `useService()` hook.
+.. code-block:: js
 
-.. example::
+   import { useService } from "@web/core/utils/hooks";
+   ...
+   setup() {
+         this.action = useService("action");
+   }
+   openSettings() {
+         this.action.doAction("base_setup.action_general_configuration");
+   }
+   ...
 
-   This shows how to open the settings view from a component using the action service.
+Let us now add some buttons to the bottem left zone of our dashboard for easy access
+to some common views in Odoo:
 
-   .. code-block:: js
 
-      import { useService } from "@web/core/utils/hooks";
-      ...
-      setup() {
-          this.action = useService("action");
-      }
-      openSettings() {
-          this.action.doAction("base_setup.action_general_configuration");
-      }
-      ...
+#. A button `Customers`, which opens a kanban view with all customers (this action already
+   exists, so you should use `its xml id
+   <https://github.com/odoo/odoo/blob/1f4e583ba20a01f4c44b0a4ada42c4d3bb074273/
+   odoo/addons/base/views/res_partner_views.xml#L525>`_).
+   
+#. A button `New Orders`, which opens a list view with all orders created in the last 7 days. Use
+   the `Domain <https://github.com/odoo/odoo/blob/1f4e583ba20a01f4c44b0a4ada42c4d3bb074273/
+   odoo/addons/web/static/src/core/domain.js#L19>`_ helper class to represent the domain.
 
-.. exercise::
+   .. tip::
+      One way to represent the desired domain could be
+      :code:`[('create_date','>=', (context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]`
 
-   Let us add three buttons in the control panel bottom left zone.
-
-   #. A button `Customers`, which opens a kanban view with all customers (this action already
-      exists, so you should use `its xml id
-      <https://github.com/odoo/odoo/blob/1f4e583ba20a01f4c44b0a4ada42c4d3bb074273/
-      odoo/addons/base/views/res_partner_views.xml#L525>`_).
-   #. A button `New Orders`, which opens a list view with all orders created in the last 7 days. Use
-      the `Domain <https://github.com/odoo/odoo/blob/1f4e583ba20a01f4c44b0a4ada42c4d3bb074273/
-      odoo/addons/web/static/src/core/domain.js#L19>`_ helper class to represent the domain.
-
-      .. tip::
-         One way to represent the desired domain could be
-         :code:`[('create_date','>=', (context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]`
-
-   #. A button `Cancelled Order`, which opens a list of all orders created in the last 7 days, but
-      already cancelled. Rather than defining the action twice, factorize it in a new `openOrders`
-      method.
+#. A button `Cancelled Order`, which opens a list of all orders created in the last 7 days, but
+   already cancelled. Rather than defining the action twice, factorize it in a new `openOrders`
+   method.
 
 .. image:: 02_web_framework/navigation_buttons.png
    :align: center
