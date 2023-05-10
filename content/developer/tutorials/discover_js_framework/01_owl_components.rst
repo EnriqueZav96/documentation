@@ -147,7 +147,7 @@ The above example should produce some html using bootstrap that look like this:
 
 .. code-block:: html
 
-         <div class="card" style="width: 18rem;">
+         <div class="card d-inline-block m-2" style="width: 18rem;">
              <div class="card-body">
                  <h5 class="card-title">my title</h5>
                  <p class="card-text">
