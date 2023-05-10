@@ -20,8 +20,11 @@ about the Odoo JavaScript framework in its entirety, as used by the web client.
    :align: center
    :width: 50%
 
-For this chapter, we will start from the empty dashboard provided by the `awesome_tshirt`
-addon. We will progressively add features to it, using the Odoo JavaScript framework.
+To get started, you need a running Odoo server and a development environment setup. Before getting
+into the exercises, make sure you have followed all the steps described in this
+:ref:`tutorial introduction <tutorials/discover_js_framework/setup>`. For this chapter, we will start
+from the empty dashboard provided by the `awesome_dashboard` addon. We will progressively add
+features to it, using the Odoo JavaScript framework.
 
 .. admonition:: Goal
 
@@ -41,15 +44,13 @@ Most screens in the Odoo web client uses a common layout: a control panel on top
 and a main content zone just below. This is done using the `Layout component
 <{GITHUB_PATH}/addons/web/static/src/search/layout.js>`_, available in `@web/search/layout`.
 
-.. exercise::
+Update the `AwesomeDashboard` component located in :file:`awesome_tshirt/static/src/` to use the
+`Layout` component. You can use
+:code:`{controlPanel: { "top-right": false, "bottom-right": false } }` for the `display` props of
+the `Layout` component.
 
-   Update the `AwesomeDashboard` component located in :file:`awesome_tshirt/static/src/` to use the
-   `Layout` component. You can use
-   :code:`{controlPanel: { "top-right": false, "bottom-right": false } }` for the `display` props of
-   the `Layout` component.
-
-   Open http://localhost:8069/web, then open the :guilabel:`Awesome T-Shirts` app, and see the
-   result.
+Open http://localhost:8069/web, then open the :guilabel:`Awesome T-Shirts` app, and see the
+result.
 
 .. image:: 02_web_framework/new_layout.png
    :align: center
