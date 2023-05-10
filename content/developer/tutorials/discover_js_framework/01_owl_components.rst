@@ -356,20 +356,25 @@ Now, here is what happens when a component has to be updated:
 10. Focusing the input
 ======================
 
-
 Let's see how we can access the DOM with `t-ref <{OWL_PATH}/doc/reference/refs.md>`_ and `useRef
-<{OWL_PATH}/doc/reference/hooks.md#useref>`_.
+<{OWL_PATH}/doc/reference/hooks.md#useref>`_. The main idea is that you need to mark
+the target element in the component template with a `t-ref`:
 
-.. exercise::
+.. code-block:: xml
 
-   #. Focus the `input` from the previous exercise when the dashboard is `mounted
-      <{OWL_PATH}/doc/reference/component.md#mounted>`_. This this should be done from the
-      `TodoList` component.
-   #. Bonus point: extract the code into a specialized `hook <{OWL_PATH}/doc/reference/hooks.md>`_
-      `useAutofocus` in a new :file:`owl_playground/utils.js` file.
+      <div t-ref="some_name">hello</div>
+   
+Then you can access it in the JS with the `useRef hook <{OWL_PATH}/doc/reference/hooks.md#useref>`_.
+However, there is a problem if you think about it: the actual html element for a
+component does not exist when the component is created. It only exists when the
+component is mounted. But hooks have to be called in the `setup` method. So, `useRef`
+return an object that contains a `el` (for element) key that is only defined when the
+component is mounted.
 
-.. seealso::
-   `Owl: Component lifecycle <{OWL_PATH}/doc/reference/component.md#lifecycle>`_
+#. Focus the `input` from the previous exercise. This this should be done from the
+   `TodoList` component (note that there is a `focus` method on the input html element). 
+#. Bonus point: extract the code into a specialized `hook <{OWL_PATH}/doc/reference/hooks.md>`_
+   `useAutofocus` in a new :file:`owl_playground/utils.js` file.
 
 8. Toggling todos
 =================
