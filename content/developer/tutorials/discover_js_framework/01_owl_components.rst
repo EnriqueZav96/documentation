@@ -22,7 +22,7 @@ into the exercises, make sure you have followed all the steps described in this
 
 In this chapter, we use the `owl_playground` addon, which provides a simplified environment that
 only contains Owl and a few other files. The goal is to learn Owl itself, without relying on Odoo
-web client code. To get started, open the `/owl_playground/playground` route with your browser: it
+web client code. To get started, open the `/owl_playground` route with your browser: it
 should display an Owl component with the text *hello world*.
 
 .. spoiler:: Solutions
