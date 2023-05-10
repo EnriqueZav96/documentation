@@ -273,8 +273,7 @@ html properties such as the `value` of an input).
 
       <div class="a" t-att-class="someExpression"/>
 
-.. seealso::
-   `Owl: Dynamic class attributes <{OWL_PATH}/doc/reference/templates.md#dynamic-class-attribute>`_
+   See also: `Owl: Dynamic class attributes <{OWL_PATH}/doc/reference/templates.md#dynamic-class-attribute>`_
 
 9. Adding a todo
 ================
@@ -307,15 +306,55 @@ a todo to the list.
 .. seealso::
    `Owl: Reactivity <{OWL_PATH}/doc/reference/reactivity.md>`_
 
+Component lifecycle, hooks and rendering
+========================================
+
+So far, we have seen one example of a hook function: `useState`. A `hook <{OWL_PATH}/doc/reference/hooks.md>`_
+is a special function that *hook into* the internals of the component. In the case of
+`useState`, it generates a proxy object linked to the current component. This is why
+hook functions have to be called in the `setup` method, and no later!
+
+.. tip::
+
+   All hook functions start with `use` or `on`. For example: `useState` or `onMounted`.
+
+An Owl component goes through a lot of phases: it can be instantiated, rendered,
+mounted, updated, detached, destroyed, ... This is the `component lifecycle <{OWL_PATH}/doc/reference/component.md#lifecycle>`_.
+
+
+It is sometimes necessary to execute some code at one or more of these events, so Owl provides 
+a large variety of hooks to do just that.
+
+Here is a short informal description of how Owl handle creating components, and their lifecycle:
+
+#. First, a component is created (`setup`)
+#. if there is a `onWillStart` callback, Owl will then execute it
+#. when the `onWillStart` callback is done, the component template will be rendered
+   (`onWillRender` and `onRendered` will be called if defined). Note that the
+   result of the rendering is a virtual dom, there are no html element yet.
+#. if there are any sub component in the template, they will go through the same phases as above
+#. when all components are rendered, Owl will wait for the next animation frame
+#. Then, it will process the virtual dom to generate the actual html element (so each
+   component has now some real html element) and attach it to the document window.
+#. Finally, Owl will call all `onMounted` callbacks (in the *child before parent* order)
+
+Now, here is what happens when a component has to be updated:
+
+#. The component template is rendered (`onWillRender` and `onRendered`)
+#. if there are any new sub component, they will go through the above process
+#. if the rendering encounter existing components, Owl will compare the new props with 
+   the previous props (shallow comparison). If they are equal, the sub component will be
+   left alone. If they are different, it will be updated
+#. Each updated sub component will have the opportunity to load data (with `onWillUpdateProps`)
+#. Then, they will also be rendered...
+#. Finally, when all components are rendered, Owl will wait for the next animation frame
+#. Finally, it will apply compare the old and new virtual dom to apply the correct
+   changes to the dom:
+   #. It will call `onWillPatch` and `onPatched` for each updated component.
+   #. If some components are no longer present, they will be unmounted (`onWillUnmount`), then destroyed (`onWillDestroy`).
+
 10. Focusing the input
-=====================
-
-Owl components go through a lot of phases: they are instantiated, rendered, mounted, ... 
-Each of these moments can be useful to perform some actions, so Owl provides `a large variety
-of special functions, named hooks<{OWL_PATH}/doc/reference/hooks.md>`_ that let you run some
-code at a specific moment in the lifecycle of a component.
-
-be proficient in Owl, it is useful to have a good mental model of the `Owl: Component lifecycle <{OWL_PATH}/doc/reference/component.md#lifecycle>`_
+======================
 
 
 Let's see how we can access the DOM with `t-ref <{OWL_PATH}/doc/reference/refs.md>`_ and `useRef
