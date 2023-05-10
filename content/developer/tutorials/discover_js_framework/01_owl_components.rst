@@ -219,7 +219,7 @@ be called whenever the `Counter` component is incremented.
 #. Update the `Counter` component to call the `onChange` prop (if it exists) whenever it
    is incremented.
 #. Modify the `Playground` component to maintain a local state value (`sum`), initially
-   set to 0
+   set to 2, and display it in its template
 #. Implement an `incrementSum` method in `Playground`
 #. Give that method as a prop to two (or more!) sub `Counter` components.
 
@@ -252,9 +252,15 @@ For this tutorial, a `todo` is an object that contains three values: an `id` (nu
       this.todos = useState([{ id: 3, description: "buy milk", isCompleted: false }]);
 
 #. Use `t-foreach <{OWL_PATH}/doc/reference/templates.md#loops>`_ to display each todo in a `TodoItem`
+#. Display a `TodoList` in the playground
 
 Note that the `t-foreach` directive is not exactly the same in Owl as the QWeb python implementation: it
 requires a `t-key` unique value, so Owl can properly reconciliate each element.
+
+.. tip::
+
+   Since the `TodoList` and `TodoItem` components are so tightly coupled, it makes
+   sense to put them in the same folder
 
 8. Use dynamic attributes
 =========================
