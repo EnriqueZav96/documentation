@@ -115,6 +115,12 @@ For now we have the logic of a counter in the `Playground` component, let us see
 #. You can do it in the same file first, but once it's done, update your code to move the
    `Counter` in its own folder and file. Import it relatively from `./counter/counter`. Make sure
    the template is in its own file, with the same name.
+#. Add two counters in your playground 
+
+.. tip::
+   By convention, most components code, template and css should have the same snake-cased name
+   as the component. For example, if we have a `TodoList` component, its code should be in
+   `todo_list.js`, `todo_list.xml` and if necessary, `todo_list.scss`
 
 .. important::
    Don't forget :code:`/** @odoo-module **/` in your JavaScript files. More information on this can
