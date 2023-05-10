@@ -10,7 +10,7 @@ Units of measure
 ================
 
 *Units of measure (UoM)* refers to different measurable quantities used to handle products, such as
-units, weight, time, size, etc. For example, different :abbr:`UoMs` (Units of Measure) for weight
+units, weight, time, size, etc. For example, different :abbr:`UoMs (Units of Measure)` for weight
 can be kilos, pounds, ounces, grams, etc.
 
 In Odoo, stock is easily managed and products are more efficiently purchased from suppliers by
@@ -20,7 +20,7 @@ specifying different *units of measure* for both purchasing and selling.
    :align: center
    :alt: Specify unit of measure for selling a product vs purchasing.
 
-Once a product has a default :abbr:`UoM (Unit of Measure)` and Purchase UoM set on the product form,
+Once a product has a default :guilabel:`Unit of Measure` and :guilabel:`Purchase Unit of Measure` set on the product form,
 Odoo automatically converts the different units in the product's purchase/sales orders and the
 orders' respective delivery orders/receipts.
 
@@ -140,7 +140,7 @@ specific product. Unlike packages, packagings cannot be reusable, and each speci
 be defined on the individual product form.
 
 For example, different packages for cans of soda can be configured as a 6-pack, a 12-pack, or a case
-of 36. Each flavor of soda would need a 6, 12, and 36 can packaging configured on the individual
+of 36. Each flavor of soda would need a `6`, `12`, and `36` can packaging configured on the individual
 product since packagings are product specific, not generic.
 
 Create different packaging for a product
@@ -152,9 +152,8 @@ Then, check the box next to :guilabel:`Product Packagings`, and click :guilabel:
 
 In Odoo, product packagings are used on sales/purchase orders and inventory transfers.
 
-Next, to create packagings, navigate to the desired product page (:menuselection:`Inventory app -->
-Products --> Products --> Click on desired product`), and click :guilabel:`Edit` on the product
-page.
+Next, to create packagings, navigate to :menuselection:`Inventory app -->
+Products --> Products` and click on the :menuselection:`desired product`, then click :guilabel:`Edit` on the product page.
 
 Under the :guilabel:`Inventory` tab, scroll down to the :guilabel:`Packaging` section, and click
 :guilabel:`Add a line`. Then, a pop-up window appears, in which the following information for each
