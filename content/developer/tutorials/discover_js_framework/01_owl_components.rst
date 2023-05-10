@@ -120,6 +120,8 @@ For now we have the logic of a counter in the `Playground` component, let us see
    Don't forget :code:`/** @odoo-module **/` in your JavaScript files. More information on this can
    be found :ref:`here <frontend/modules/native_js>`.
 
+.. _tutorials/discover_js_framework/simple_card:
+
 3. A simple `Card` component
 ============================
 
@@ -362,7 +364,7 @@ the target element in the component template with a `t-ref`:
 
 .. code-block:: xml
 
-      <div t-ref="some_name">hello</div>
+   <div t-ref="some_name">hello</div>
    
 Then you can access it in the JS with the `useRef hook <{OWL_PATH}/doc/reference/hooks.md#useref>`_.
 However, there is a problem if you think about it: the actual html element for a
@@ -371,13 +373,32 @@ component is mounted. But hooks have to be called in the `setup` method. So, `us
 return an object that contains a `el` (for element) key that is only defined when the
 component is mounted.
 
+.. code-block:: js
+
+   setup() {
+      this.myRef = useRef('some_name');
+      onMounted(() => {
+         console.log(this.myRef.el);
+      });
+   }
+
+
 #. Focus the `input` from the previous exercise. This this should be done from the
    `TodoList` component (note that there is a `focus` method on the input html element). 
 #. Bonus point: extract the code into a specialized `hook <{OWL_PATH}/doc/reference/hooks.md>`_
    `useAutofocus` in a new :file:`owl_playground/utils.js` file.
 
-8. Toggling todos
-=================
+.. tip::
+
+   Refs are usually suffixed by `Ref` to make it obvious that they are special objects: 
+
+   .. code-block:: js
+
+      this.inputRef = useRef('refname');
+
+   
+11. Toggling todos
+==================
 
 Now, let's add a new feature: mark a todo as completed. This is actually trickier than one might
 think. The owner of the state is not the same as the component that displays it. So, the `Todo`
@@ -385,47 +406,43 @@ component needs to communicate to its parent that the todo state needs to be tog
 way to do this is by using a `callback prop
 <{OWL_PATH}/doc/reference/props.md#binding-function-props>`_ `toggleState`.
 
-.. exercise::
+#. Add an input with the attribute :code:`type="checkbox"` before the id of the task, which must
+   be checked if the state `done` is true.
 
-   #. Add an input with the attribute :code:`type="checkbox"` before the id of the task, which must
-      be checked if the state `done` is true.
+   .. tip::
+      Owl does not create attributes computed with the `t-att` directive if it evaluates to a
+      falsy value.
 
-      .. tip::
-         QWeb does not create attributes computed with the `t-att` directive if it evaluates to a
-         falsy value.
-
-   #. Add a callback props `toggleState`.
-   #. Add a `click` event handler on the input in the `Todo` component and make sure it calls the
-      `toggleState` function with the todo id.
-   #. Make it work!
+#. Add a callback props `toggleState`.
+#. Add a `click` event handler on the input in the `Todo` component and make sure it calls the
+   `toggleState` function with the todo id.
+#. Make it work!
 
 .. image:: 01_owl_components/toggle_todo.png
    :scale: 70%
    :align: center
 
-9. Deleting todos
-=================
+12. Deleting todos
+==================
 
 The final touch is to let the user delete a todo.
 
-.. exercise::
+#. Add a new callback prop `removeTodo`.
+#. Insert :code:`<span class="fa fa-remove"/>` in the template of the `Todo` component.
+#. Whenever the user clicks on it, it should call the `removeTodo` method.
 
-   #. Add a new callback prop `removeTodo`.
-   #. Insert :code:`<span class="fa fa-remove"/>` in the template of the `Todo` component.
-   #. Whenever the user clicks on it, it should call the `removeTodo` method.
+   .. tip::
+      If you're using an array to store your todo list, you can use the JavaScript `splice`
+      function to remove a todo from it.
 
-      .. tip::
-         If you're using an array to store your todo list, you can use the JavaScript `splice`
-         function to remove a todo from it.
+.. code-block::
 
-   .. code-block::
-
-      // find the index of the element to delete
-      const index = list.findIndex((elem) => elem.id === elemId);
-      if (index >= 0) {
-          // remove the element at index from list
-          list.splice(index, 1);
-      }
+   // find the index of the element to delete
+   const index = list.findIndex((elem) => elem.id === elemId);
+   if (index >= 0) {
+         // remove the element at index from list
+         list.splice(index, 1);
+   }
 
 .. image:: 01_owl_components/delete_todo.png
    :scale: 70%
@@ -433,43 +450,24 @@ The final touch is to let the user delete a todo.
 
 .. _tutorials/discover_js_framework/generic_card:
 
-10. Generic card with slots
+13. Generic card with slots
 ===========================
 
-Owl has a powerful `slot <{OWL_PATH}/doc/reference/slots.md>`_ system to allow you to write generic
-components. This is useful to factorize the common layout between different parts of the interface.
+In a :ref:`previous exercise <tutorials/discover_js_framework/simple_card>`, we built
+a simple `Card` component. But it is honestly quite limited. What if we want
+to display some arbitrary content inside a card, such as a sub component? Well,
+it does not work, since the content of the card is described by a string. It would
+however be very convenient if we could describe the content as a piece of template.
 
-.. exercise::
+This is exactly what Owl `slot <{OWL_PATH}/doc/reference/slots.md>`_ system is designed
+for: allowing to write generic components. 
 
-   #. Insert a new `Card` component between the `Counter` and `Todolist` components. Use the
-      following Bootstrap HTML structure for the card:
+Let us modify the `Card` component to use slots:
 
-      .. code-block:: html
-
-         <div class="card" style="width: 18rem;">
-             <img src="..." class="card-img-top" alt="..." />
-             <div class="card-body">
-                 <h5 class="card-title">Card title</h5>
-                 <p class="card-text">
-                     Some quick example text to build on the card title and make up the bulk
-                     of the card's content.
-                 </p>
-                 <a href="#" class="btn btn-primary">Go somewhere</a>
-             </div>
-         </div>
-
-   #. This component should have two slots: one slot for the title, and one for the content (the
-      default slot). It should be possible to use the `Card` component as follows:
-
-      .. code-block:: html
-
-         <Card>
-             <t t-set-slot="title">Card title</t>
-             <p class="card-text">Some quick example text...</p>
-             <a href="#" class="btn btn-primary">Go somewhere</a>
-         </Card>
-
-   #. Bonus point: if the `title` slot is not given, the `h5` should not be rendered at all.
+#. Remove the `content` prop
+#. Use the default slot to define the body
+#. Insert a few cards with arbitrary content, such as a `Counter` component
+#. (bonus) Add prop validation
 
 .. image:: 01_owl_components/card.png
    :scale: 70%
@@ -478,11 +476,12 @@ components. This is useful to factorize the common layout between different part
 .. seealso::
    `Bootstrap: documentation on cards <https://getbootstrap.com/docs/5.2/components/card/>`_
 
-11. Extensive props validation
-==============================
+14. Minimizing card content
+===========================
 
-.. exercise::
+Finally, let's add a feature to the `Card` component, to make it more interesting: we
+want a button to toggle its content (show it or hide it)
 
-   #. Add prop validation on the `Card` component.
-   #. Try to express in the props validation system that it requires a `default` slot, and an
-      optional `title` slot.
+#. Add a state to the `Card` component to track if it is open (the default) or not
+#. Add a `t-if` in the template to conditionally render the content
+#. Add a button in the header, and modify the code to flip the state when the button is clicked
